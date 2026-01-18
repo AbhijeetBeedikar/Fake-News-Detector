@@ -3,17 +3,17 @@ import time
 import pandas as pd
 import joblib
 from huggingface_hub import hf_hub_download
+import re
 
 if "load_model" not in st.session_state or "TFIDF" not in st.session_state:
     model_path = hf_hub_download(repo_id="AbhijeetBeedikar/Fake-News-Detector-RFC",
                                  filename="Fake_News_detector_model.pkl")
     st.session_state.load_model = joblib.load(model_path)
-    st.session_state.TFIDF = joblib.load('/content/drive/MyDrive/AI_Projects/Fake News Detector/fake_news_detector_tfidf_vectorizer_model_3.joblib')
+    st.session_state.TFIDF = joblib.load('fake_news_detector_tfidf_vectorizer_model_3.joblib')
 
 # Your actual model prediction function
 def clean(listt):
   #works for removing links from texts, additional spaces & new lines, special unknown characters, and makes sure "a.b" turns to "a. b"
-  import re
   empty = []
   for b in listt:
     if '(Reuters) -' in b:
@@ -47,8 +47,8 @@ def reality_check(text):
         # return 'Please enter a longer text.'
     dict = {'name': news}
     df = pd.DataFrame(dict)
-    vectorized_news = TFIDF.transform(df['name'])
-    return load_model.predict(vectorized_news)[0]
+    vectorized_news = st.session_state.TFIDF.transform(df['name'])
+    return bool(st.session_state.load_model.predict(vectorized_news)[0])
 
 
 # Page config
