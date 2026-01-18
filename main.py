@@ -41,7 +41,7 @@ def reality_check(text):
     """
     news = clean([str(text)])
     print(news)
-    if len(news[0]) <= 600:
+    if len(news[0]) <= 550:
         print('Please enter a longer text.')
         raise KeyboardInterrupt
         # return 'Please enter a longer text.'
@@ -61,6 +61,9 @@ st.set_page_config(
 # Custom CSS for styling
 st.markdown("""
 <style>
+    h1 {
+        color: black !important;
+    }
     /* Main background with gradient */
     .stApp {
         background: linear-gradient(135deg, #EFF6FF 0%, #FAF5FF 50%, #FDF2F8 100%);
